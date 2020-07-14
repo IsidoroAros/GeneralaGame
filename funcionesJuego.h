@@ -17,7 +17,7 @@ void menu(char *nombre1, char *nombre2, int &rondas,int &jugadores, bool &azar);
 
 void nombresJugadores(int cant_jug, char *nomb1, char *nomb2); /// segun la cantidad de jugadores pide uno o dos nombres
 
-void tirosDeJugador(int &puntos_j1, char *nombre1, bool &azar, int &rondas, int *dadosJug, int &tiros_gen); /// si se decide jugar de a 1 se desarrolla el juego
+void tirosDeJugador(char *nombre1, bool &azar, int *dadosJug, int &tiros_gen); /// si se decide jugar de a 1 se desarrolla el juego
 
 void configurarPartida(int &rondas, bool &azar); /// configuracion de rondas y de partida aleatoria o no
 
@@ -98,9 +98,9 @@ void configurarPartida(int &rondas, bool &azar){
 
 }
 
-void tirosDeJugador(int &puntos_j1, char *nombre1, bool &azar, int &rondas, int *dadosJug, int &tiros_gen){
+void tirosDeJugador(char *nombre1, bool &azar, int *dadosJug, int &tiros_gen){
 
-    const int dados=5, limite=6, nombres=20, juegosPosibles = 11;
+    const int dados=5, limite=6, juegosPosibles = 11;
     bool consulta_dados, jugado[juegosPosibles]={false};
     int tiros=0, i,j, cant_jug;
 
@@ -159,16 +159,15 @@ void tirosDeJugador(int &puntos_j1, char *nombre1, bool &azar, int &rondas, int 
 
 
 void Evaluar_combinacion(char *nombJuga,int tiro[], int tam, int juegosJugador[], bool yaJugado[],int tiros_gen, int &puntos){
-    const int t0=11;
-    int Turno[t0]={0},y, I, Men, Max, t=0;
-
+    const int t0=10;
+    int Turno[t0]={0},y, I, Men, Max=0, t=0;
     ///cout<<"\n3 - ORDENO DE MENOR A MAYOR ";
     ordenarVector(tiro,tam);
 
         /// evaluacion de combinaciones posibles
         /// A=A=A=A=A SERVIDO
     if((tiro[0]==tiro[1]&&tiro[1]==tiro[2]&&tiro[2]==tiro[3]&&tiro[3]==tiro[4]) && tiros_gen<=1){
-        Turno[11]+=100;
+        Turno[10]+=100;
         }
     if((tiro[0]==tiro[1]&&tiro[1]==tiro[2]&&tiro[2]==tiro[3]&&tiro[3]==tiro[4]) && tiros_gen>1){
         Turno[9]+=50;
@@ -183,7 +182,7 @@ void Evaluar_combinacion(char *nombJuga,int tiro[], int tam, int juegosJugador[]
         Turno[6]+=25;
         }
 
-    for(int y=0; y<t0; y++){
+    for(int y=0; y<5; y++){
         if(tiro[y]==1) {Turno[0]+=tiro[y];}
         if(tiro[y]==2) {Turno[1]+=tiro[y];}
         if(tiro[y]==3) {Turno[2]+=tiro[y];}
@@ -193,18 +192,13 @@ void Evaluar_combinacion(char *nombJuga,int tiro[], int tam, int juegosJugador[]
     }
     /// BUSCO EL MAYOR RESULTADO DESCARTANDO EL jUGADO O YA COMPLETADO
     for(int z=0; z<t0; z++){
-        if((z==0) && (yaJugado[z]==0)){
-            Max=Turno[z];
-            I=z;
-        }
-        else{
+
         if((Turno[z]>Max) && (yaJugado[z]==0)){
                 Max=Turno[z];
                 I=z;
                 }
             }
-        }
-
+            cout << "PRIMER MUESTRA JUGADOR 10\t\t\t\t" << juegosJugador[10];
         juegosJugador[I]=Turno[I];
         yaJugado[I]=true;
 
@@ -219,7 +213,7 @@ void Evaluar_combinacion(char *nombJuga,int tiro[], int tam, int juegosJugador[]
             case 7: cout<<"FULL"<< endl; break;
             case 8: cout<<"POKER"<< endl; break;
             case 9: cout<<"GENERALA"<< endl; break;
-            case 11: cout<<"GENERALA SERVIDA"<< endl; break;
+            case 10: cout<<"GENERALA SERVIDA"<< endl; break;
             }
 
         puntos+=juegosJugador[I];
@@ -281,7 +275,7 @@ void cambioDados(int vec[], int tam, bool &azar){
 
 
 void Menu_combinaciones(char Nombre[], int tiro[], int Jugador[], bool Jugado[]){
-
+                cout << "SEGUNDA MUESTRA JUGADOR 10\t\t" <<Jugador[10];
     int tama = 5;
     cout<<"\n Jugador: "<<Nombre << "\t";
     mostrarVector(tiro, tama);
@@ -300,7 +294,7 @@ void Menu_combinaciones(char Nombre[], int tiro[], int Jugador[], bool Jugado[])
     cout<<"\n\t    full                   "<<Jugador[7]<<"\t\t"<<Jugado[7];
     cout<<"\n\t    poker                  "<<Jugador[8]<<"\t\t"<<Jugado[8];
     cout<<"\n\t    generala               "<<Jugador[9]<<"\t\t"<<Jugado[9];
-    cout<<"\n\t    g_servida              "<<Jugador[11]<<"\t\t"<<Jugado[11];
+    cout<<"\n\t    g_servida              "<<Jugador[10]<<"\t\t"<<Jugado[10];
     cout << endl << endl << endl;
     system("PAUSE");
     system("CLS");
